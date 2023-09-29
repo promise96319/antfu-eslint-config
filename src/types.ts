@@ -145,6 +145,12 @@ export interface OptionsConfig extends OptionsComponentExts {
   vue?: boolean
 
   /**
+   * Enable React support.
+   * @default auto-detect based on the dependencies
+   */
+  react?: boolean
+
+  /**
    * Enable JSONC support.
    *
    * @default true
@@ -186,6 +192,7 @@ export interface OptionsConfig extends OptionsComponentExts {
     typescript?: FlatESLintConfigItem['rules']
     test?: FlatESLintConfigItem['rules']
     vue?: FlatESLintConfigItem['rules']
+    react?: FlatESLintConfigItem['rules']
     jsonc?: FlatESLintConfigItem['rules']
     markdown?: FlatESLintConfigItem['rules']
     yaml?: FlatESLintConfigItem['rules']
