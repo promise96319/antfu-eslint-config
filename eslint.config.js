@@ -1,10 +1,11 @@
-import sortKeys from 'eslint-plugin-sort-keys'
 import styleMigrate from '@stylistic/eslint-plugin-migrate'
+import sortKeys from 'eslint-plugin-sort-keys'
 import antfu from './dist/index.js'
 
 export default antfu(
   {
     vue: true,
+    react: true,
     typescript: true,
     ignores: [
       'fixtures',

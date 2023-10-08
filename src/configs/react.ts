@@ -1,6 +1,6 @@
-import type { FlatESLintConfigItem, OptionsOverrides } from '../types'
 import { GLOB_JSX, GLOB_TSX } from '../globs'
 import { pluginReact, pluginReactHooks } from '../plugins'
+import type { FlatESLintConfigItem, OptionsOverrides } from '../types'
 
 export function react(
   options: OptionsOverrides = {},
@@ -28,8 +28,6 @@ export function react(
       rules: {
         ...pluginReact.configs.recommended.rules,
         ...pluginReactHooks.configs.recommended.rules,
-
-        'jsx-quotes': ['error', 'prefer-double'],
 
         'react/jsx-boolean-value': 'error',
         'react/jsx-closing-bracket-location': 'error',
@@ -72,6 +70,8 @@ export function react(
             return: 'parens-new-line',
           },
         ],
+
+        'style/jsx-quotes': ['error', 'prefer-double'],
 
         ...overrides,
       },
