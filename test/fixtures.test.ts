@@ -1,8 +1,8 @@
-import { join, resolve } from 'node:path'
-import { afterAll, beforeAll, it } from 'vitest'
-import fs from 'fs-extra'
 import { execa } from 'execa'
 import fg from 'fast-glob'
+import fs from 'fs-extra'
+import { join, resolve } from 'node:path'
+import { afterAll, beforeAll, it } from 'vitest'
 import type { FlatESLintConfigItem, OptionsConfig } from '../src/types'
 
 beforeAll(async () => {
@@ -24,6 +24,14 @@ runWithConfig('no-style', {
   typescript: true,
   vue: true,
   stylistic: false,
+})
+runWithConfig('tab-double-quotes', {
+  typescript: true,
+  vue: true,
+  stylistic: {
+    indent: 'tab',
+    quotes: 'double',
+  },
 })
 
 // https://github.com/antfu/eslint-config/issues/255

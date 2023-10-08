@@ -1,7 +1,12 @@
-import type { FlatESLintConfigItem } from '../types'
+import type { FlatESLintConfigItem, StylisticConfig } from '../types'
 import { pluginAntfu, pluginStylistic } from '../plugins'
 
-export function stylistic(): FlatESLintConfigItem[] {
+export function stylistic(options: StylisticConfig = {}): FlatESLintConfigItem[] {
+  const {
+    indent = 2,
+    quotes = 'single',
+  } = options
+
   return [
     {
       name: 'antfu:stylistic',
@@ -12,10 +17,11 @@ export function stylistic(): FlatESLintConfigItem[] {
       rules: {
         'antfu/consistent-list-newline': 'error',
         'antfu/if-newline': 'error',
+        'antfu/top-level-function': 'error',
 
         'curly': ['error', 'multi-or-nest', 'consistent'],
-
         'style/array-bracket-spacing': ['error', 'never'],
+
         'style/arrow-spacing': ['error', { after: true, before: true }],
         'style/block-spacing': ['error', 'always'],
         'style/brace-style': ['error', 'stroustrup', { allowSingleLine: true }],
@@ -24,7 +30,8 @@ export function stylistic(): FlatESLintConfigItem[] {
         'style/comma-style': ['error', 'last'],
         'style/computed-property-spacing': ['error', 'never', { enforceForClassMembers: true }],
         'style/dot-location': ['error', 'property'],
-        'style/indent': ['error', 2, {
+        'style/eol-last': 'error',
+        'style/indent': ['error', indent, {
           ArrayExpression: 1,
           CallExpression: { arguments: 1 },
           FunctionDeclaration: { body: 1, parameters: 1 },
@@ -62,22 +69,36 @@ export function stylistic(): FlatESLintConfigItem[] {
           offsetTernaryExpressions: true,
           outerIIFEBody: 1,
         }],
+        'style/jsx-quotes': 'error',
         'style/key-spacing': ['error', { afterColon: true, beforeColon: false }],
         'style/keyword-spacing': ['error', { after: true, before: true }],
         'style/lines-between-class-members': ['error', 'always', { exceptAfterSingleLine: true }],
+        'style/max-statements-per-line': ['error', { max: 1 }],
         'style/member-delimiter-style': ['error', { multiline: { delimiter: 'none' } }],
         'style/multiline-ternary': ['error', 'always-multiline'],
+        'style/new-parens': 'error',
+        'style/no-extra-parens': ['error', 'functions'],
+        'style/no-floating-decimal': 'error',
+        'style/no-mixed-operators': ['error', {
+          allowSamePrecedence: true,
+          groups: [
+            ['==', '!=', '===', '!==', '>', '>=', '<', '<='],
+            ['&&', '||'],
+            ['in', 'instanceof'],
+          ],
+        }],
         'style/no-mixed-spaces-and-tabs': 'error',
         'style/no-multi-spaces': 'error',
         'style/no-multiple-empty-lines': ['error', { max: 1, maxBOF: 0, maxEOF: 0 }],
-        'style/no-tabs': 'error',
+        'style/no-tabs': indent === 'tab' ? 'off' : 'error',
         'style/no-trailing-spaces': 'error',
         'style/no-whitespace-before-property': 'error',
         'style/object-curly-spacing': ['error', 'always'],
         'style/object-property-newline': ['error', { allowMultiplePropertiesPerLine: true }],
         'style/operator-linebreak': ['error', 'before'],
         'style/padded-blocks': ['error', { blocks: 'never', classes: 'never', switches: 'never' }],
-        'style/quotes': ['error', 'single', { allowTemplateLiterals: true, avoidEscape: true }],
+        'style/quote-props': ['error', 'consistent-as-needed'],
+        'style/quotes': ['error', quotes, { allowTemplateLiterals: true, avoidEscape: false }],
         'style/rest-spread-spacing': ['error', 'never'],
         'style/semi': ['error', 'never'],
         'style/semi-spacing': ['error', { after: true, before: false }],
@@ -100,6 +121,7 @@ export function stylistic(): FlatESLintConfigItem[] {
         'style/template-curly-spacing': 'error',
         'style/template-tag-spacing': ['error', 'never'],
         'style/type-annotation-spacing': ['error', {}],
+        'style/wrap-iife': ['error', 'any', { functionPrototypeMethods: true }],
         'style/yield-star-spacing': ['error', 'both'],
       },
     },

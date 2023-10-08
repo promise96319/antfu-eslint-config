@@ -81,11 +81,8 @@ export function typescript(
         'antfu/generic-spacing': 'error',
         'antfu/named-tuple-spacing': 'error',
         'antfu/no-cjs-exports': 'error',
-        'antfu/no-const-enum': 'error',
-        'antfu/no-ts-export-equal': 'error',
 
         'no-dupe-class-members': OFF,
-        'no-extra-parens': OFF,
         'no-invalid-this': OFF,
         'no-loss-of-precision': OFF,
         'no-redeclare': OFF,
@@ -98,7 +95,6 @@ export function typescript(
         'ts/no-dupe-class-members': 'error',
         'ts/no-dynamic-delete': OFF,
         'ts/no-explicit-any': OFF,
-        'ts/no-extra-parens': ['error', 'functions'],
         'ts/no-extraneous-class': OFF,
         'ts/no-invalid-this': 'error',
         'ts/no-invalid-void-type': OFF,
@@ -123,6 +119,7 @@ export function typescript(
       rules: {
         'eslint-comments/no-unlimited-disable': OFF,
         'import/no-duplicates': OFF,
+        'no-restricted-syntax': OFF,
         'unused-imports/no-unused-vars': OFF,
       },
     },

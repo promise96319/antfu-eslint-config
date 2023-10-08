@@ -75,6 +75,11 @@ export function react(
 
         ...overrides,
       },
+      settings: {
+        react: {
+          version: 'detect',
+        },
+      },
     },
   ]
 }
