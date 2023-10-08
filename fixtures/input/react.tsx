@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 
 export function App() {
-  const [count, setCount] = useState(0)
-  const [greeting] = useState('Hello')
+  const [count, setCount] = useState<number  | string>(0)
+  const [greeting] = useState<string>('Hello')
 
-  const incrementCounter = () => {
+  const incrementCounter = (): void => {
     setCount(count + 1)
   }
 

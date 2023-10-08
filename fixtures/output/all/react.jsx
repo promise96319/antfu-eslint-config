@@ -9,10 +9,13 @@ export function App() {
   }
 
   return (
-    <div className='container'>
+    <div className="container">
       <h1>{greeting}</h1>
       <button onClick={incrementCounter}>Click me!</button>
-      <p>Counter: {count}</p>
+      <p>
+        Counter:
+        {count}
+      </p>
     </div>
   )
 }
