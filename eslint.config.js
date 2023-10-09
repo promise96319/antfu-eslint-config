@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+// @ts-check
+import sortKeys from 'eslint-plugin-sort-keys'
+>>>>>>> upstream/main
 import styleMigrate from '@stylistic/eslint-plugin-migrate'
 import sortKeys from 'eslint-plugin-sort-keys'
 import antfu from './dist/index.js'
@@ -11,9 +16,6 @@ export default antfu(
       'fixtures',
       '_fixtures',
     ],
-    // typescript: {
-    //   tsconfigPath: 'tsconfig.json',
-    // },
   },
   {
     files: ['src/**/*.ts'],

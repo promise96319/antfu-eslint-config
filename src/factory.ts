@@ -2,7 +2,7 @@ import process from 'node:process'
 import fs from 'node:fs'
 import { isPackageExists } from 'local-pkg'
 import gitignore from 'eslint-config-flat-gitignore'
-import type { FlatESLintConfigItem, OptionsConfig } from './types'
+import type { ConfigItem, OptionsConfig } from './types'
 import {
   comments,
   ignores,
@@ -24,7 +24,7 @@ import {
 } from './configs'
 import { combine } from './utils'
 
-const flatConfigProps: (keyof FlatESLintConfigItem)[] = [
+const flatConfigProps: (keyof ConfigItem)[] = [
   'files',
   'ignores',
   'languageOptions',
@@ -51,19 +51,26 @@ const ReactPackages = [
 /**
  * Construct an array of ESLint flat config items.
  */
-export function antfu(options: OptionsConfig & FlatESLintConfigItem = {}, ...userConfigs: (FlatESLintConfigItem | FlatESLintConfigItem[])[]) {
+export function antfu(options: OptionsConfig & ConfigItem = {}, ...userConfigs: (ConfigItem | ConfigItem[])[]) {
   const {
     isInEditor = !!((process.env.VSCODE_PID || process.env.JETBRAINS_IDE) && !process.env.CI),
     vue: enableVue = VuePackages.some(i => isPackageExists(i)),
     react: enableReact = ReactPackages.some(i => isPackageExists(i)),
     typescript: enableTypeScript = isPackageExists('typescript'),
-    stylistic: enableStylistic = true,
     gitignore: enableGitignore = true,
     overrides = {},
     componentExts = [],
   } = options
 
-  const configs: FlatESLintConfigItem[][] = []
+  const stylisticOptions = options.stylistic === false
+    ? false
+    : typeof options.stylistic === 'object'
+      ? options.stylistic
+      : {}
+  if (stylisticOptions && !('jsx' in stylisticOptions))
+    stylisticOptions.jsx = options.jsx ?? true
+
+  const configs: ConfigItem[][] = []
 
   if (enableGitignore) {
     if (typeof enableGitignore !== 'boolean') {
@@ -85,10 +92,10 @@ export function antfu(options: OptionsConfig & FlatESLintConfigItem = {}, ...use
     comments(),
     node(),
     jsdoc({
-      stylistic: enableStylistic,
+      stylistic: stylisticOptions,
     }),
     imports({
-      stylistic: enableStylistic,
+      stylistic: stylisticOptions,
     }),
     unicorn(),
   )
@@ -106,13 +113,8 @@ export function antfu(options: OptionsConfig & FlatESLintConfigItem = {}, ...use
     }))
   }
 
-  if (enableStylistic) {
-    configs.push(stylistic(
-      typeof enableStylistic === 'boolean'
-        ? {}
-        : enableStylistic,
-    ))
-  }
+  if (stylisticOptions)
+    configs.push(stylistic(stylisticOptions))
 
   if (options.test ?? true) {
     configs.push(test({
@@ -124,7 +126,7 @@ export function antfu(options: OptionsConfig & FlatESLintConfigItem = {}, ...use
   if (enableVue) {
     configs.push(vue({
       overrides: overrides.vue,
-      stylistic: enableStylistic,
+      stylistic: stylisticOptions,
       typescript: !!enableTypeScript,
     }))
   }
@@ -139,7 +141,7 @@ export function antfu(options: OptionsConfig & FlatESLintConfigItem = {}, ...use
     configs.push(
       jsonc({
         overrides: overrides.jsonc,
-        stylistic: enableStylistic,
+        stylistic: stylisticOptions,
       }),
       sortPackageJson(),
       sortTsconfig(),
@@ -149,7 +151,7 @@ export function antfu(options: OptionsConfig & FlatESLintConfigItem = {}, ...use
   if (options.yaml ?? true) {
     configs.push(yaml({
       overrides: overrides.yaml,
-      stylistic: enableStylistic,
+      stylistic: stylisticOptions,
     }))
   }
 
@@ -166,7 +168,7 @@ export function antfu(options: OptionsConfig & FlatESLintConfigItem = {}, ...use
     if (key in options)
       acc[key] = options[key] as any
     return acc
-  }, {} as FlatESLintConfigItem)
+  }, {} as ConfigItem)
   if (Object.keys(fusedConfig).length)
     configs.push([fusedConfig])
 
@@ -174,9 +176,6 @@ export function antfu(options: OptionsConfig & FlatESLintConfigItem = {}, ...use
     ...configs,
     ...userConfigs,
   )
-
-  // recordRulesStateConfigs(merged)
-  // warnUnnecessaryOffRules()
 
   return merged
 }
